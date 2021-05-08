@@ -1,6 +1,7 @@
 import { Module, Global } from '@nestjs/common';
 import { Client } from 'pg';
 import { ConfigType } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm'; // 👈 import el modulo de typeorm
 
 import config from '../config';
 
@@ -21,6 +22,29 @@ client.connect(); // Realizamos la conexion
 // Los módulos globales deben registrarse solo una vez , generalmente por el módulo raíz o principal
 @Global()
 @Module({
+  // Como TypeOrmModule es un modulo debemos configurarlo dentro de los imports
+  imports: [
+    // 👈 use TypeOrmModule y le agregamos una configuracion asincrona para enviar useFactory e inyecciones de dependencias
+    TypeOrmModule.forRootAsync({
+      inject: [config.KEY], // Realizamos la inyeccion de dependencias como un parametro de entrada
+      // useFactory: Permite crear proveedores de forma dinámica .
+      // El proveedor real será proporcionado por el valor devuelto por una función de ConfigType de tipo config.
+      useFactory: (configService: ConfigType<typeof config>) => {
+        // Optenemos los datos de configuracion de las variables de entorno
+        const { user, host, dbName, password, port } = configService.postgres;
+
+        // Retornamos la configuracion de la conexion
+        return {
+          type: 'postgres', // indicamos el tipo de base de datos de forma explicita
+          host,
+          port,
+          username: user,
+          password,
+          database: dbName,
+        };
+      },
+    }),
+  ],
   providers: [
     {
       // El API_KEY token se resolverá en el process.env.NODE_ENV objeto simulado
@@ -36,7 +60,7 @@ client.connect(); // Realizamos la conexion
       // useFactory: Permite crear proveedores de forma dinámica .
       // El proveedor real será proporcionado por el valor devuelto por una función de ConfigType de tipo config.
       useFactory: (configService: ConfigType<typeof config>) => {
-        // Optenemos los datos de configuracion de las bariables de entorno
+        // Optenemos los datos de configuracion de las variables de entorno
         const { user, host, dbName, password, port } = configService.postgres;
         // Una vez echa la inyeccion de dependecias creamos la conexion de dependecias
         const client = new Client({
@@ -55,6 +79,6 @@ client.connect(); // Realizamos la conexion
   ],
   // Con exports indicamos que nuestro provide pueda ser utilizado por cualquier componente
   // y no se necesitara ser importado en los componentes
-  exports: ['API_KEY', 'PG'],
+  exports: ['API_KEY', 'PG', TypeOrmModule], // Exportamos directamente TypeOrmModule
 })
 export class DatabaseModule {}
