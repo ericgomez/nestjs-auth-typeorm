@@ -11,3 +11,11 @@ services:
       - '5432:5432'
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+
+  pgadmin: # 👈 add pgadmin
+    image: dpage/pgadmin4
+    environment: # Configureaciones de acceso pgadmin
+      - PGADMIN_DEFAULT_EMAIL=root@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports: # Puerto donde estara escuchando pgadmin
+      - '5050:80'
