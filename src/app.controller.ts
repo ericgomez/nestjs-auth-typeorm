@@ -19,4 +19,10 @@ export class AppController {
   hello() {
     return 'con /sas/';
   }
+
+  @Get('tasks') // 👈 new endpoint
+  tasks() {
+    // Ejecutamos la funcion del servicio de app.service que es getTasks
+    return this.appService.getTasks();
+  }
 }
