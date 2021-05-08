@@ -21,6 +21,12 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get('tasks') // 👈 new endpoint
+  getTasks() {
+    // Ejecutamos la llamada del metodo que esta en users.services de nombre getTasks
+    return this.usersService.getTasks();
+  }
+
   @Get(':id')
   get(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);

@@ -1,5 +1,8 @@
 import { Module, Global } from '@nestjs/common';
 import { Client } from 'pg';
+import { ConfigType } from '@nestjs/config';
+
+import config from '../config';
 
 const API_KEY = '12345634';
 const API_KEY_PROD = 'PROD1212121SA';
@@ -30,8 +33,24 @@ client.connect(); // Realizamos la conexion
     {
       // El PG es el nombre de nuestro provider postgres
       provide: 'PG',
-      // El provider PG realizara la inyeccion de dependencias del valor que tiene el client que ya tiene la conexion activa
-      useValue: client,
+      // useFactory: Permite crear proveedores de forma dinámica .
+      // El proveedor real será proporcionado por el valor devuelto por una función de ConfigType de tipo config.
+      useFactory: (configService: ConfigType<typeof config>) => {
+        // Optenemos los datos de configuracion de las bariables de entorno
+        const { user, host, dbName, password, port } = configService.postgres;
+        // Una vez echa la inyeccion de dependecias creamos la conexion de dependecias
+        const client = new Client({
+          user,
+          host,
+          database: dbName,
+          password,
+          port,
+        });
+        client.connect(); // Realizamos la conecion con postgres
+        // Retornamos el cliente
+        return client;
+      },
+      inject: [config.KEY], // Realizamos la inyeccion de dependencias como un parametro de entrada
     },
   ],
   // Con exports indicamos que nuestro provide pueda ser utilizado por cualquier componente
