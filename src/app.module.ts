@@ -7,9 +7,26 @@ import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 
 import * as Joi from 'joi'; // 👈
+import { Client } from 'pg';
 
 import { enviroments } from './enviroments'; // 👈
 import config from './config'; // 👈 Importamos la configuracion
+
+const client = new Client({
+  user: 'root',
+  host: 'localhost',
+  database: 'my_db',
+  password: '123456',
+  port: 5432,
+});
+
+client.connect(); // Realizamos la conexion
+
+// Realizamos una consulta que retorna (err, res)
+client.query('SELECT * FROM tasks', (err, res) => {
+  console.error(err);
+  console.log(res.rows);
+});
 
 @Module({
   imports: [
