@@ -1,4 +1,10 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  CreateDateColumn, // 👈 new decorator
+  UpdateDateColumn, // 👈 new decorator
+} from 'typeorm';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
 export class Product {
@@ -19,4 +25,18 @@ export class Product {
 
   @Column({ type: 'varchar' }) // indicamos que sera una tabla y la columna sera de tipo varchar
   image: string;
+
+  // 👈 Implement decorator
+  @CreateDateColumn({
+    type: 'timestamptz', // Creamos el tipo de dato timestamp y agregamos tz para que el mismo ordene su zona horaria
+    default: () => 'CURRENT_TIMESTAMP', // Este paso nos ayuda a no tener que insertar el valor, si no que lo hace automaticamente
+  })
+  createAt: Date;
+
+  // 👈 Implement decorator
+  @UpdateDateColumn({
+    type: 'timestamptz', // Creamos el tipo de dato timestamp y agregamos tz para que el mismo ordene su zona horaria
+    default: () => 'CURRENT_TIMESTAMP', // Este paso nos ayuda a no tener que insertar el valor, si no que lo hace automaticamente
+  })
+  updateAt: Date;
 }
