@@ -41,7 +41,7 @@ client.connect(); // Realizamos la conexion
           username: user,
           password,
           database: dbName,
-          synchronize: true, // 👈 new attr - las entidades se Sincronizan con la base de datos para poder insertar las tablas
+          synchronize: false, // 👈 new attr - las entidades se Sincronizan con la base de datos para poder insertar las tablas
           autoLoadEntities: true, // 👈 new attr - Autocarga de las entidades
         };
       },
