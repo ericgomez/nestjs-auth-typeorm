@@ -9,6 +9,10 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
+      transformOptions: {
+        // Si llega una cadena de caracteres que se puede representar en un numero lo va a convertir a numero de manera automatica
+        enableImplicitConversion: true, // Habilitamos la conversion de forma implicita
+      },
     }),
   );
 

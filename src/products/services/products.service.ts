@@ -5,7 +5,11 @@ import { Repository } from 'typeorm'; // 👈 import
 import { Product } from './../entities/product.entity';
 import { Category } from './../entities/category.entity';
 import { Brand } from './../entities/brand.entity';
-import { CreateProductDto, UpdateProductDto } from './../dtos/products.dtos';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  FilterProductsDto,
+} from './../dtos/products.dtos';
 
 @Injectable()
 export class ProductsService {
@@ -15,7 +19,16 @@ export class ProductsService {
     @InjectRepository(Category) private categoryRepo: Repository<Category>,
   ) {}
 
-  findAll() {
+  // Pasamos el parametro params como opcional con ?
+  findAll(params?: FilterProductsDto) {
+    if (params) {
+      const { limit, offset } = params; // descontruimos params
+      return this.productRepo.find({
+        relations: ['brand'],
+        take: limit, // Almacenamos el liminte en take
+        skip: offset, // Almacenamos los elementos a escapar en skip
+      });
+    }
     return this.productRepo.find({
       relations: ['brand'], // Resolviendo con relaciones
     }); // 👈 use repo
