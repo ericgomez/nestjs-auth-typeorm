@@ -1,29 +1,19 @@
 import {
   PrimaryGeneratedColumn,
-  Column,
-  Entity,
-  CreateDateColumn,
   UpdateDateColumn,
-  OneToOne, // 👈 new decorator
-  OneToMany, // 👈 new decorator
+  CreateDateColumn,
+  Entity,
+  Column,
+  ManyToOne,
 } from 'typeorm';
 
-import { User } from './user.entity';
+import { Product } from '../../products/entities/product.entity';
 import { Order } from './order.entity';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
-export class Customer {
+export class OrderItem {
   @PrimaryGeneratedColumn() // Decorador permite que una columna sea generada automáticamente
   id: number;
-
-  @Column({ type: 'varchar', length: 255 }) // indicamos que sera una tabla y la columna sera de tipo varchar y el tamaño
-  name: string;
-
-  @Column({ type: 'varchar', length: 255 }) // indicamos que sera una tabla y la columna sera de tipo varchar y el tamaño
-  lastName: string;
-
-  @Column({ type: 'varchar', length: 255 }) // indicamos que sera una tabla y la columna sera de tipo varchar y el tamaño
-  phone: string;
 
   // 👈 Implement decorator
   @CreateDateColumn({
@@ -39,9 +29,14 @@ export class Customer {
   })
   updateAt: Date;
 
-  @OneToOne(() => User, (user) => user.customer, { nullable: true }) // Especificamos desde la tabla de user quien tiene la referencia de customer
-  user: User;
+  @Column({ type: 'int' }) // indicamos que sera una tabla y la columna sera de tipo entero
+  quantity: number;
 
-  @OneToMany(() => Order, (order) => order.customer)
-  orders: Order[];
+  // Decorador pricipal es ManyToOne, Tiene la Foreign key
+  @ManyToOne(() => Product) // Relaciones muchos a uno con products y NO bidireccional
+  product: Product;
+
+  // Decorador pricipal es ManyToOne, Tiene la Foreign key
+  @ManyToOne(() => Order, (order) => order.items) // Decorador pricipal es ManyToOne, Tiene la Foreign key y es bidireccional con Order
+  order: Order;
 }
