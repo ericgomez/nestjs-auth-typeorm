@@ -3,14 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm'; // 👈 import
 import { Repository } from 'typeorm'; // 👈 import
 
 import { Product } from './../entities/product.entity';
-import { BrandsService } from './brands.service';
+import { Category } from './../entities/category.entity';
+import { Brand } from './../entities/brand.entity';
 import { CreateProductDto, UpdateProductDto } from './../dtos/products.dtos';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product) private productRepo: Repository<Product>, // 👈 Inject in Constructor
-    private brandsService: BrandsService, // 👈 Inject in Constructor
+    @InjectRepository(Brand) private brandRepo: Repository<Brand>, // 👈 Inject in Constructor
+    @InjectRepository(Category) private categoryRepo: Repository<Category>,
   ) {}
 
   findAll() {
@@ -21,7 +23,9 @@ export class ProductsService {
 
   // Cambiamos la funcion de manera asincrona para poder validar cuando un producto no fue encontrado
   async findOne(id: number) {
-    const product = await this.productRepo.findOne(id); // 👈 use repo
+    const product = await this.productRepo.findOne(id, {
+      relations: ['brand', 'categories'], // Implementamos las relaciones para hacer un Join con las tables que se agregan al array
+    }); // 👈 use repo
     if (!product) {
       throw new NotFoundException(`Product #${id} not found`);
     }
@@ -43,8 +47,14 @@ export class ProductsService {
     // Validamos si existe brandId
     if (data.brandId) {
       // Obetenemos el brandId
-      const brand = await this.brandsService.findOne(data.brandId);
+      const brand = await this.brandRepo.findOne(data.brandId);
       newProduct.brand = brand;
+    }
+    if (data.categoriesIds) {
+      // Obtenemos todas las categorias de puedan existir en un array
+      const categories = await this.categoryRepo.findByIds(data.categoriesIds);
+      // Se las enviamos al nuevo producto
+      newProduct.categories = categories;
     }
     return this.productRepo.save(newProduct); // Guradamos en la base de datos
   }
@@ -54,7 +64,7 @@ export class ProductsService {
     // Validamos si existe brandId
     if (changes.brandId) {
       // Obetenemos el brandId
-      const brand = await this.brandsService.findOne(changes.brandId);
+      const brand = await this.brandRepo.findOne(changes.brandId);
       product.brand = brand;
     }
     // Con merge realizamos los cambio recibiendo: (Producto a actualizar, y los cambios que se tiene que aplicar)

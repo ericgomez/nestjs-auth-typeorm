@@ -16,7 +16,9 @@ export class CategoriesService {
   }
 
   async findOne(id: number) {
-    const category = this.categoryRepo.findOne(id);
+    const category = this.categoryRepo.findOne(id, {
+      relations: ['products'], // Implementamos las relaciones para hacer un Join con las tables que se agregan al array
+    });
     if (!category) {
       throw new NotFoundException(`Category #${id} not found`);
     }
