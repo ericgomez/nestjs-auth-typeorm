@@ -17,6 +17,6 @@ import { Category } from './entities/category.entity'; // Importamos la entidad 
   providers: [ProductsService, BrandsService, CategoriesService],
   // Nota: Como cada modulo es aislado podemos exporta un para que cualquier otro modulo lo pueda usar
   // en este caso lo exportamo para que lo pueda usar el modulo -> users
-  exports: [ProductsService],
+  exports: [ProductsService, TypeOrmModule], // Exportamos para que otros modulos puedan utilizar las entidades en otros modulos
 })
 export class ProductsModule {}
