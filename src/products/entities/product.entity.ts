@@ -44,6 +44,6 @@ export class Product {
   updateAt: Date;
 
   // Decorador pricipal es ManyToOne, Tiene la Foreign key
-  @ManyToOne(() => Brand, (brand) => brand.product) // Relaciones muchos a uno
+  @ManyToOne(() => Brand, (brand) => brand.products) // Relaciones muchos con products
   brand: Brand;
 }

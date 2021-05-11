@@ -36,5 +36,5 @@ export class Brand {
 
   // El decorador OneToMany, solo sirve de referencia
   @OneToMany(() => Product, (product) => product.brand) // Relaciones uno a muchos
-  product: Product[];
+  products: Product[]; // Ponemos products en plural por que es un Array
 }
