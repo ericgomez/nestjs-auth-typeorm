@@ -63,8 +63,26 @@ export class ProductsController {
     return this.productsService.update(id, payload);
   }
 
+  @Put(':id/category/:categoryId')
+  addCategoryToProduct(
+    @Param('id') id: number,
+    // Nota: Tenemos que tener en cuenta que el valor que recibimos de un Query siempre es String por ende devemos convertilo con los PIPES
+    @Param('categoryId', ParseIntPipe) categoryId: number, // Parseamos nuestro el valor de categoryId a un tipo entero con ParseIntPipe
+  ) {
+    return this.productsService.addCategoryToProduct(id, categoryId);
+  }
+
   @Delete(':id')
   delete(@Param('id') id: number) {
     return this.productsService.remove(id);
+  }
+
+  @Delete(':id/category/:categoryId')
+  deleteCategory(
+    @Param('id', ParseIntPipe) id: number,
+    // Nota: Tenemos que tener en cuenta que el valor que recibimos de un Query siempre es String por ende devemos convertilo con los PIPES
+    @Param('categoryId', ParseIntPipe) categoryId: number, // Parseamos nuestro el valor de categoryId a un tipo entero con ParseIntPipe
+  ) {
+    return this.productsService.removeCategoryByProduct(id, categoryId);
   }
 }

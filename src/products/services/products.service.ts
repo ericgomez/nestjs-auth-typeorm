@@ -67,10 +67,46 @@ export class ProductsService {
       const brand = await this.brandRepo.findOne(changes.brandId);
       product.brand = brand;
     }
+    if (changes.categoriesIds) {
+      // Obtenemos todas las categorias de puedan existir en un array
+      const categories = await this.categoryRepo.findByIds(
+        changes.categoriesIds,
+      );
+      // Se las enviamos al nuevo producto
+      product.categories = categories;
+    }
     // Con merge realizamos los cambio recibiendo: (Producto a actualizar, y los cambios que se tiene que aplicar)
     this.productRepo.merge(product, changes);
 
     return this.productRepo.save(product); // Guradamos en la base de datos
+  }
+
+  async removeCategoryByProduct(productId: number, categoryId: number) {
+    // Obtenemos el producto
+    const product = await this.productRepo.findOne(productId, {
+      relations: ['categories'], // Implementamos la relacion hacia categories
+    });
+
+    // Realizamos un filtro al array con la relacion de categories
+    product.categories = product.categories.filter(
+      // Eliminamos al que no tenga coincidencia -> Eliminamos el id buscado
+      (item) => item.id !== categoryId,
+    );
+    // Guardamos
+    return this.productRepo.save(product);
+  }
+
+  async addCategoryToProduct(productId: number, categoryId: number) {
+    // Obtenemos el producto
+    const product = await this.productRepo.findOne(productId, {
+      relations: ['categories'], // Implementamos la relacion hacia categories
+    });
+    // Validamos si existe la categoria antes de agregarla
+    const category = await this.categoryRepo.findOne(categoryId);
+    // Agregamos el elemento al Array con push
+    product.categories.push(category);
+    // Guardamos
+    return this.productRepo.save(product);
   }
 
   remove(id: number) {
