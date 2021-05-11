@@ -2,9 +2,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Entity,
-  CreateDateColumn, // 👈 new decorator
-  UpdateDateColumn, // 👈 new decorator
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne, // 👈 new decorator
+  JoinColumn, // 👈 new decorator
 } from 'typeorm';
+
+import { Customer } from './customer.entity';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
 export class User {
@@ -33,4 +37,9 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP', // Este paso nos ayuda a no tener que insertar el valor, si no que lo hace automaticamente
   })
   updateAt: Date;
+
+  @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
+  // Nota: El JoinColumn solo dede existir de deferencia de un lado ya sea en (user o costumer) No en dos
+  @JoinColumn() // Crea la referencia al momento de enlazar y crear la llave foranea
+  customer: Customer;
 }

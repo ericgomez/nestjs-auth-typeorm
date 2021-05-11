@@ -2,9 +2,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Entity,
-  CreateDateColumn, // 👈 new decorator
-  UpdateDateColumn, // 👈 new decorator
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne, // 👈 new decorator
 } from 'typeorm';
+
+import { User } from './user.entity';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
 export class Customer {
@@ -33,4 +36,7 @@ export class Customer {
     default: () => 'CURRENT_TIMESTAMP', // Este paso nos ayuda a no tener que insertar el valor, si no que lo hace automaticamente
   })
   updateAt: Date;
+
+  @OneToOne(() => User, (user) => user.customer, { nullable: true }) // Especificamos desde la tabla de user quien tiene la referencia de customer
+  user: User;
 }
