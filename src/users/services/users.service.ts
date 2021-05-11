@@ -8,6 +8,7 @@ import { User } from '../entities/user.entity';
 import { Order } from '../entities/order.entity';
 
 import { ProductsService } from './../../products/services/products.service';
+import { CustomersService } from './customers.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
 @Injectable()
@@ -18,6 +19,7 @@ export class UsersService {
     private configService: ConfigService,
     @Inject('PG') private clientPg: Client, // 👈 inject PG
     @InjectRepository(User) private userRepo: Repository<User>, // Injectamos la dependencia userRepo
+    private customersService: CustomersService,
   ) {}
 
   findAll() {
@@ -25,7 +27,9 @@ export class UsersService {
     const apiKey = this.configService.get('API_KEY'); // 👈 get API_KEY
     const dbName = this.configService.get('DATABASE_NAME'); // 👈 get DATABASE_NAME
     console.log(apiKey, dbName);
-    return this.userRepo.find();
+    return this.userRepo.find({
+      relations: ['customer'], // Resolviendo la relacion de -> customer
+    });
   }
 
   async findOne(id: number) {
@@ -36,8 +40,14 @@ export class UsersService {
     return user;
   }
 
-  create(data: CreateUserDto) {
+  async create(data: CreateUserDto) {
     const newUser = this.userRepo.create(data);
+    // Validamos si existe el customerId
+    if (data.customerId) {
+      const customer = await this.customersService.findOne(data.customerId);
+      // Asignamos el nuevo customer
+      newUser.customer = customer;
+    }
     return this.userRepo.save(newUser);
   }
 
