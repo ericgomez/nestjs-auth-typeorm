@@ -2,9 +2,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Entity,
-  CreateDateColumn, // 👈 new decorator
-  UpdateDateColumn, // 👈 new decorator
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne, // 👈 new decorator
 } from 'typeorm';
+
+import { Brand } from './brand.entity';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
 export class Product {
@@ -39,4 +42,8 @@ export class Product {
     default: () => 'CURRENT_TIMESTAMP', // Este paso nos ayuda a no tener que insertar el valor, si no que lo hace automaticamente
   })
   updateAt: Date;
+
+  // Decorador pricipal es ManyToOne, Tiene la Foreign key
+  @ManyToOne(() => Brand, (brand) => brand.product) // Relaciones muchos a uno
+  brand: Brand;
 }
