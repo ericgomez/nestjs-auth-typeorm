@@ -4,10 +4,13 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne, // 👈 new decorator
+  ManyToOne,
+  ManyToMany, // 👈 new decorator
+  JoinTable, // 👈 new decorator and decorator main, crea la tabla terniaria
 } from 'typeorm';
 
 import { Brand } from './brand.entity';
+import { Category } from './category.entity';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
 export class Product {
@@ -44,6 +47,10 @@ export class Product {
   updateAt: Date;
 
   // Decorador pricipal es ManyToOne, Tiene la Foreign key
-  @ManyToOne(() => Brand, (brand) => brand.products) // Relaciones muchos con products
+  @ManyToOne(() => Brand, (brand) => brand.products) // Relaciones muchos a uno con products
   brand: Brand;
+
+  @ManyToMany(() => Category, (category) => category.products) // Relaciones muchos a muchos con Category, tambien indicamos en category.products estara la relacion
+  @JoinTable() // Decorador principal necesario para la comunicacion muchos a muchos, solo debe de estar en un lado de la relacion (o en producto o en categorias)
+  categories: Category[];
 }

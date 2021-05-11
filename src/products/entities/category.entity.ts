@@ -4,7 +4,10 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
 } from 'typeorm';
+
+import { Product } from './product.entity';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
 export class Category {
@@ -27,4 +30,7 @@ export class Category {
     default: () => 'CURRENT_TIMESTAMP', // Este paso nos ayuda a no tener que insertar el valor, si no que lo hace automaticamente
   })
   updateAt: Date;
+
+  @ManyToMany(() => Product, (product) => product.categories) // Relaciones muchos a muchos con Product , tambien indicamos que en product.categories estara la relacion
+  products: Product[]; // Manejamos la variable en plurar por que maneja un arreglo de productos
 }
