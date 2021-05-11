@@ -9,9 +9,10 @@ import { BrandsService } from './services/brands.service';
 import { CategoriesService } from './services/categories.service';
 import { Product } from './entities/product.entity'; // Importamos la entidad de productos
 import { Brand } from './entities/brand.entity'; // Importamos la entidad de brand
+import { Category } from './entities/category.entity'; // Importamos la entidad de brand
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product, Brand])], // 👈 Include entitites para administrar las entitites
+  imports: [TypeOrmModule.forFeature([Product, Brand, Category])], // 👈 Include entitites para administrar las entitites
   controllers: [ProductsController, CategoriesController, BrandsController],
   providers: [ProductsService, BrandsService, CategoriesService],
   // Nota: Como cada modulo es aislado podemos exporta un para que cualquier otro modulo lo pueda usar
