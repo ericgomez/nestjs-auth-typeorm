@@ -5,14 +5,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  ManyToMany, // 👈 new decorator
+  ManyToMany,
   JoinTable, // 👈 new decorator and decorator main, crea la tabla terniaria
+  Index, // 👈 new decorator
 } from 'typeorm';
 
 import { Brand } from './brand.entity';
 import { Category } from './category.entity';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
+@Index(['price', 'stock']) // Forma1: Agregando indexadores de forma conjunta ejem: price y stock
 export class Product {
   @PrimaryGeneratedColumn() // Decorador permite que una columna sea generada automáticamente
   id: number;
@@ -23,6 +25,7 @@ export class Product {
   @Column({ type: 'text' }) // indicamos que sera una tabla y la columna sera de tipo text
   description: string;
 
+  @Index() // Forma2: Agregando indexadores solo a price
   @Column({ type: 'int' }) // indicamos que sera una tabla y la columna sera de tipo int
   price: number;
 
