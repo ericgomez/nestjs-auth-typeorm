@@ -23,14 +23,14 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 
-# Curso de NestJS: Programación Modular
+# Curso de NestJS: Persistencia de Datos con TypeORM
 
 
 ### Proyecto del curso
 ![Proyect](https://static.platzi.com/media/landing-projects/Proyecto-1.png)
-## Backend de PlatziStore - Módulos
+## Backend de PlatziStore - Conexión a PostreSQL
 
-Crea la segunda versión de tu API REST con NestJS, organiza tu proyecto web usando módulos, documenta tus endpoints de forma automática y despliega tu aplicación a Heroku.
+Crea la tercera versión de tu API REST con NestJS interactuando con una base de datos SQL de verdad. Configura Docker para funcionar correctamente con TypeORM y todo su stack de herramientas para desarrollo web.
 
 ## Documentation
 ```bash
@@ -39,6 +39,20 @@ $ http://localhost:3000
 
 # Documentation con nestjs
  http://localhost:3000/docs/
+```
+
+## Migrations
+```bash
+# Generate new migration
+$ npm run migrations:generate -- <name-migrations>
+# Example:
+$ npm run migrations:generate -- init
+
+# execute migration and generate tables in data base
+ npm run migrations:run
+
+# Delete all tables of data base
+ npm run migrations:drop
 ```
 ## Installation
 
