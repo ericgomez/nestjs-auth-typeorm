@@ -26,6 +26,7 @@ export class User {
 
   // 👈 Implement decorator
   @CreateDateColumn({
+    name: 'create_at', // Al momento de ser creada la tabla en la base de datos, tendra el nombre de 'create_at' para su columna
     type: 'timestamptz', // Creamos el tipo de dato timestamp y agregamos tz para que el mismo ordene su zona horaria
     default: () => 'CURRENT_TIMESTAMP', // Este paso nos ayuda a no tener que insertar el valor, si no que lo hace automaticamente
   })
@@ -33,6 +34,7 @@ export class User {
 
   // 👈 Implement decorator
   @UpdateDateColumn({
+    name: 'update_at', // Al momento de ser creada la tabla en la base de datos, tendra el nombre de 'update_at' para su columna
     type: 'timestamptz', // Creamos el tipo de dato timestamp y agregamos tz para que el mismo ordene su zona horaria
     default: () => 'CURRENT_TIMESTAMP', // Este paso nos ayuda a no tener que insertar el valor, si no que lo hace automaticamente
   })
@@ -40,6 +42,9 @@ export class User {
 
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
   // Nota: El JoinColumn solo dede existir de deferencia de un lado ya sea en (user o costumer) No en dos
-  @JoinColumn() // Crea la referencia al momento de enlazar y crear la llave foranea
+  @JoinColumn({
+    // En las relaciones el nombramiento lo debe tener el parametro que tenga el JoinColumn
+    name: 'customer_id', // Al momento de ser creada la tabla en la base de datos, tendra el nombre de 'customer_id' para su columna
+  }) // Crea la referencia al momento de enlazar y crear la llave foranea
   customer: Customer;
 }
