@@ -7,6 +7,8 @@ import {
   ManyToOne,
 } from 'typeorm';
 
+import { Exclude } from 'class-transformer';
+
 import { Product } from '../../products/entities/product.entity';
 import { Order } from './order.entity';
 
@@ -16,6 +18,7 @@ export class OrderItem {
   id: number;
 
   // 👈 Implement decorator
+  @Exclude() // Decorador permite Excluir informacion en este caso: createAt
   @CreateDateColumn({
     name: 'create_at', // Al momento de ser creada la tabla en la base de datos, tendra el nombre de 'create_at' para su columna
     type: 'timestamptz', // Creamos el tipo de dato timestamp y agregamos tz para que el mismo ordene su zona horaria
@@ -24,6 +27,7 @@ export class OrderItem {
   createAt: Date;
 
   // 👈 Implement decorator
+  @Exclude() // Decorador permite Excluir informacion en este caso: updateAt
   @UpdateDateColumn({
     name: 'update_at', // Al momento de ser creada la tabla en la base de datos, tendra el nombre de 'update_at' para su columna
     type: 'timestamptz', // Creamos el tipo de dato timestamp y agregamos tz para que el mismo ordene su zona horaria
