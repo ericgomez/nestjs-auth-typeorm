@@ -58,6 +58,9 @@ $ npm run migrations:generate -- init
 
 ```bash
 $ npm install
+
+# Init instance of Docker
+$ docker-compose up -d  
 ```
 
 ## Running the app
