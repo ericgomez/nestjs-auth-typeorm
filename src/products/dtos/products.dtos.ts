@@ -5,8 +5,9 @@ import {
   IsNotEmpty,
   IsPositive,
   IsArray,
-  IsOptional, // 👈 new decorator
-  Min, // 👈 new decorator
+  IsOptional,
+  Min,
+  ValidateIf, // 👈 new decorator, permite agregarle una condicional aun parametro
 } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
@@ -58,4 +59,12 @@ export class FilterProductsDto {
   @IsOptional()
   @Min(0)
   offset: number; // Elementos a escaparse
+
+  @IsOptional()
+  @IsPositive()
+  minPrice: number;
+
+  @ValidateIf((item) => item.minPrice) // Validamos que si exite minPrice, maxPrice sera obligatorio
+  @IsPositive()
+  maxPrice: number;
 }

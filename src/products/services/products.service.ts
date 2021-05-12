@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'; // 👈 import
-import { Repository } from 'typeorm'; // 👈 import
+import { Repository, Between, FindConditions } from 'typeorm'; // 👈 import
 
 import { Product } from './../entities/product.entity';
 import { Category } from './../entities/category.entity';
@@ -22,9 +22,17 @@ export class ProductsService {
   // Pasamos el parametro params como opcional con ?
   findAll(params?: FilterProductsDto) {
     if (params) {
+      const where: FindConditions<Product> = {}; // Para que la condicion Where sea dimamica lo de caramos al inicia como un objecto vacio, lo tipamos
       const { limit, offset } = params; // descontruimos params
+      const { maxPrice, minPrice } = params; // descontruimos params
+
+      console.log(minPrice, maxPrice);
+      if (minPrice && maxPrice) {
+        where.price = Between(minPrice, maxPrice); // Implementamos el metodo Between para crear un filtro de tipo rango
+      }
       return this.productRepo.find({
         relations: ['brand'],
+        where, // Enviamos el Where como parametro
         take: limit, // Almacenamos el liminte en take
         skip: offset, // Almacenamos los elementos a escapar en skip
       });
