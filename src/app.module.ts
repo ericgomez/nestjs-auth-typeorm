@@ -9,6 +9,7 @@ import { DatabaseModule } from './database/database.module';
 import * as Joi from 'joi'; // 👈
 
 import { enviroments } from './enviroments'; // 👈
+import { AuthModule } from './auth/auth.module';
 import config from './config'; // 👈 Importamos la configuracion
 
 @Module({
@@ -29,6 +30,7 @@ import config from './config'; // 👈 Importamos la configuracion
         DATABASE_PORT: Joi.number().required(), //Validamos que DATABASE_PORT sea numero y sera requerido
       }),
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
