@@ -1,19 +1,28 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  UseGuards,
+  SetMetadata, // 👈 new decorator
+} from '@nestjs/common';
 import { AppService } from './app.service';
 
 import { ApiKeyGuard } from './auth/guards/api-key.guard'; // Import Guards
 
+@UseGuards(ApiKeyGuard) // Protegemos todas las rutas(endpoints) de toda la clase
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  @SetMetadata('isPublic', true) // Indicamos que el endpoint sera publico y No estara protegido por el guardian
   getHello(): string {
     return this.appService.getHello(); // Utilizamos el servicio
   }
 
-  @UseGuards(ApiKeyGuard) // Protegemos la ruta con el Guardian
   @Get('nuevo')
+  @SetMetadata('isPublic', true) // Indicamos que el endpoint sera publico y No estara protegido por el guardian
   newEndpoint() {
     return 'yo soy nuevo';
   }
