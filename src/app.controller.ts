@@ -7,6 +7,7 @@ import {
   SetMetadata, // 👈 new decorator
 } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Public } from './auth/decorators/public.decorator'; // Traemos nuestro decorador personalizado
 
 import { ApiKeyGuard } from './auth/guards/api-key.guard'; // Import Guards
 
@@ -16,13 +17,13 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @SetMetadata('isPublic', true) // Indicamos que el endpoint sera publico y No estara protegido por el guardian
+  @Public() // Con esta forma, podemos centralizar la funcionalidad del decorador en un solo punto './auth/decorators/public.decorator'
   getHello(): string {
     return this.appService.getHello(); // Utilizamos el servicio
   }
 
   @Get('nuevo')
-  @SetMetadata('isPublic', true) // Indicamos que el endpoint sera publico y No estara protegido por el guardian
+  @Public() // Con esta forma, podemos centralizar la funcionalidad del decorador en un solo punto './auth/decorators/public.decorator'
   newEndpoint() {
     return 'yo soy nuevo';
   }

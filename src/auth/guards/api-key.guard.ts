@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { IS_PUBLIC_KEY } from './../decorators/public.decorator'; // Obtenemos la variable de nuestro decorador personalizado
 
 import { Request } from 'express';
 
@@ -17,8 +18,8 @@ export class ApiKeyGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     // Para acceder a la(s) función(es) de la ruta (metadatos personalizados), usaremos la Reflector
-    // Obtenemos por medio de get el valor del controller que tiene @SetMetadata('isPublic', true)
-    const isPublic = this.reflector.get('isPublic', context.getHandler());
+    // Obtenemos por medio de get el valor de nuestro decorador personalizado
+    const isPublic = this.reflector.get(IS_PUBLIC_KEY, context.getHandler());
     // Validamos si es public
     if (isPublic) {
       // En caso de que sea poublico retornamos automaticamente true
