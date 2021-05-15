@@ -25,7 +25,7 @@ import config from './config'; // 👈 Importamos la configuracion
       isGlobal: true, // Indicamos que la configuracion sera Global y todos la podran usar
       validationSchema: Joi.object({
         // 👈 Utilizamos la libreria de JOI para las validaciones
-        API_KEY: Joi.number().required(), //Validamos que API_KEY sea numero y sera requerido
+        API_KEY: Joi.string().required(), //Validamos que API_KEY sea string y sera requerido
         DATABASE_NAME: Joi.string().required(), //Validamos que DATABASE_NAME sea string y sera requerido
         DATABASE_PORT: Joi.number().required(), //Validamos que DATABASE_PORT sea numero y sera requerido
       }),
