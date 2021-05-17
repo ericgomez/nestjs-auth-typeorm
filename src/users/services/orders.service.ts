@@ -17,6 +17,14 @@ export class OrdersService {
     return this.orderRepo.find();
   }
 
+  ordersByCustomer(customerId: number) {
+    return this.orderRepo.find({
+      where: {
+        customer: customerId,
+      },
+    });
+  }
+
   async findOne(id: number) {
     const order = await this.orderRepo.findOne(id, {
       // Implamentamos el JOIN en Nest

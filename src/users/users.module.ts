@@ -17,6 +17,7 @@ import { OrdersService } from './services/orders.service';
 import { OrdersController } from './controllers/orders.controller';
 import { OrderItemController } from './controllers/order-item.controller';
 import { OrderItemService } from './services/order-item.service';
+import { ProfileController } from './controllers/profile.controller';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { OrderItemService } from './services/order-item.service';
     UsersController,
     OrdersController,
     OrderItemController,
+    ProfileController,
   ],
   providers: [CustomersService, UsersService, OrdersService, OrderItemService],
   exports: [UsersService], // esportamos el metodo UsersService para que pueda ser utlizado por cualquier otro modulo
