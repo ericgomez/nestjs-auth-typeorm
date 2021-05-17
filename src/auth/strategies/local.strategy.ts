@@ -8,13 +8,15 @@ import { Strategy } from 'passport-local';
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   // Reaizamos inyeccion de dependecias
   constructor(private authService: AuthService) {
-    super();
+    // Por medio del super podemos indicar el nombre que queremos que tenga la naming que recibimos
+    // forzamos a que el naming sea el que indicamos en el super()
+    super({ usernameField: 'email', passwordField: 'password' });
   }
 
   // Funcion para validar el usuario y el password
   async validate(email: string, password: string) {
     // Implementam el metodo del servicio AuthService
-    const user = this.authService.validateUser(email, password);
+    const user = await this.authService.validateUser(email, password);
 
     // Si el usuario es diferente de true
     if (!user) {
