@@ -26,13 +26,16 @@ import {
 } from '../dtos/products.dtos';
 
 import { ProductsService } from './../services/products.service';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard'; // importamos el guardian personalizado
+import { Public } from '../../auth/decorators/public.decorator'; // Decorador que da metadata al endpoint
 
-@UseGuards(AuthGuard('jwt')) // 👈 El nombre debe ser el mismos con el que se declaro en el jwt.strategy.ts
+@UseGuards(JwtAuthGuard) // 👈 Agregamos nuestro Guardian extendido
 @ApiTags('products') // 👈 Agregar un tag en la docuemntacion para separarlo por el grupo products
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
+  @Public() // Indicamos con este decorador Public y el Guradian que no quererira un token
   @Get()
   @ApiOperation({ summary: 'List of products' }) // 👈 Agregar una descripcion pequeña en el endpoint
   getProducts(@Query() params: FilterProductsDto) {
@@ -44,6 +47,7 @@ export class ProductsController {
     return `yo soy un filter`;
   }
 
+  @Public() // Indicamos con este decorador Public y el Guradian que no quererira un token
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
   getOne(@Param('productId', ParseIntPipe) productId: number) {
