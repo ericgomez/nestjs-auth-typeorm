@@ -10,11 +10,13 @@ import {
   HttpStatus,
   HttpCode,
   Res,
+  UseGuards, // 👈 new decorator
   // ParseIntPipe,
 } from '@nestjs/common';
 
 import { Response } from 'express';
 import { ApiTags, ApiOperation } from '@nestjs/swagger'; // 👈
+import { AuthGuard } from '@nestjs/passport'; // 👈
 
 import { ParseIntPipe } from '../../common/parse-int.pipe';
 import {
@@ -25,6 +27,7 @@ import {
 
 import { ProductsService } from './../services/products.service';
 
+@UseGuards(AuthGuard('jwt')) // 👈 El nombre debe ser el mismos con el que se declaro en el jwt.strategy.ts
 @ApiTags('products') // 👈 Agregar un tag en la docuemntacion para separarlo por el grupo products
 @Controller('products')
 export class ProductsController {

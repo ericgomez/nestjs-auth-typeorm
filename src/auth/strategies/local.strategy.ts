@@ -5,6 +5,7 @@ import { AuthService } from './../services/auth.service';
 import { Strategy } from 'passport-local';
 
 @Injectable()
+// Obtenemos Strategy de passport-local y le ponemos de nombre local
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   // Reaizamos inyeccion de dependecias
   constructor(private authService: AuthService) {
