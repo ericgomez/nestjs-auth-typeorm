@@ -23,7 +23,13 @@ import { OrderItemService } from './services/order-item.service';
     ProductsModule,
     TypeOrmModule.forFeature([User, Customer, Order, OrderItem]), // importamos el modulo de products para poder utilizarlo en users
   ],
-  controllers: [CustomerController, UsersController, OrdersController, OrderItemController],
+  controllers: [
+    CustomerController,
+    UsersController,
+    OrdersController,
+    OrderItemController,
+  ],
   providers: [CustomersService, UsersService, OrdersService, OrderItemService],
+  exports: [UsersService], // esportamos el metodo UsersService para que pueda ser utlizado por cualquier otro modulo
 })
 export class UsersModule {}

@@ -8,6 +8,8 @@ import {
   JoinColumn, // 👈 new decorator
 } from 'typeorm';
 
+import { Exclude } from 'class-transformer';
+
 import { Customer } from './customer.entity';
 
 @Entity() // Decorador indicamos que la clase sera una entidad
@@ -18,6 +20,7 @@ export class User {
   @Column({ type: 'varchar', length: 255 }) // indicamos que sera una tabla y la columna sera de tipo varchar y el tamaño
   email: string;
 
+  @Exclude() // Excluimos el password de la respuesta desde cualquier consulta que nos llege ya sea desde Postman
   @Column({ type: 'varchar', length: 255 }) // indicamos que sera una tabla y la columna sera de tipo varchar y el tamaño
   password: string;
 
