@@ -27,9 +27,12 @@ import {
 
 import { ProductsService } from './../services/products.service';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard'; // importamos el guardian personalizado
+import { RolesGuard } from '../../auth/guards/roles.guard'; // Importamos nuestro Guardian personalizado
 import { Public } from '../../auth/decorators/public.decorator'; // Decorador que da metadata al endpoint
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { Role } from '../../auth/models/roles.model';
 
-@UseGuards(JwtAuthGuard) // 👈 Agregamos nuestro Guardian extendido
+@UseGuards(JwtAuthGuard, RolesGuard) // 👈 Agregamos nuestro Guardian extendido e implementamos otro nuevo Guardian, los ejecutara en el orden izquierda derecha
 @ApiTags('products') // 👈 Agregar un tag en la docuemntacion para separarlo por el grupo products
 @Controller('products')
 export class ProductsController {
@@ -57,6 +60,7 @@ export class ProductsController {
     return this.productsService.findOne(productId);
   }
 
+  @Roles(Role.ADMIN) // indicamos que el unico que tiene acceso sera el rol de administrador podemos agregar mas roles con @Roles(Role.ADMIN, Role.CUSTOMER)
   @Post()
   create(@Body() payload: CreateProductDto) {
     return this.productsService.create(payload);
