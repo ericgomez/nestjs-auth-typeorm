@@ -81,7 +81,11 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-
+## Heroku link
+```bash
+#  Postgres in Heroku
+https://platzi-store-app.herokuapp.com/
+```
 ## Test
 
 ```bash
