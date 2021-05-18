@@ -29,6 +29,7 @@ import config from './config'; // 👈 Importamos la configuracion
         DATABASE_NAME: Joi.string().required(), //Validamos que DATABASE_NAME sea string y sera requerido
         DATABASE_PORT: Joi.number().required(), //Validamos que DATABASE_PORT sea numero y sera requerido
         JWT_SECRET: Joi.string().required(), //Validamos que JWT_SECRET sea string y sera requerido
+        DATABASE_URL: Joi.number().required(), //Validamos que DATABASE_URL sea numero y sera requerido
       }),
     }),
     AuthModule,

@@ -31,18 +31,23 @@ client.connect(); // Realizamos la conexion
       // El proveedor real será proporcionado por el valor devuelto por una función de ConfigType de tipo config.
       useFactory: (configService: ConfigType<typeof config>) => {
         // Optenemos los datos de configuracion de las variables de entorno
-        const { user, host, dbName, password, port } = configService.postgres;
+        //const { user, host, dbName, password, port } = configService.postgres;
 
         // Retornamos la configuracion de la conexion
         return {
           type: 'postgres', // indicamos el tipo de base de datos de forma explicita
-          host,
-          port,
-          username: user,
-          password,
-          database: dbName,
+          // host,
+          // port,
+          // username: user,
+          // password,
+          // database: dbName,
+          url: configService.postgresUrl,
           synchronize: false, // 👈 new attr - las entidades se Sincronizan con la base de datos para poder insertar las tablas
           autoLoadEntities: true, // 👈 new attr - Autocarga de las entidades
+          ssl: {
+            // Necesario para heroku
+            rejectUnauthorized: false,
+          },
         };
       },
     }),
@@ -63,14 +68,19 @@ client.connect(); // Realizamos la conexion
       // El proveedor real será proporcionado por el valor devuelto por una función de ConfigType de tipo config.
       useFactory: (configService: ConfigType<typeof config>) => {
         // Optenemos los datos de configuracion de las variables de entorno
-        const { user, host, dbName, password, port } = configService.postgres;
+        //const { user, host, dbName, password, port } = configService.postgres;
         // Una vez echa la inyeccion de dependecias creamos la conexion de dependecias
         const client = new Client({
-          user,
-          host,
-          database: dbName,
-          password,
-          port,
+          // user,
+          // host,
+          // database: dbName,
+          // password,
+          // port,
+          connectionString: configService.postgresUrl,
+          ssl: {
+            // Necesario para heroku
+            rejectUnauthorized: false,
+          },
         });
         client.connect(); // Realizamos la conecion con postgres
         // Retornamos el cliente
