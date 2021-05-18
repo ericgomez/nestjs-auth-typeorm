@@ -23,14 +23,14 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 
-# Curso de NestJS: Persistencia de Datos con TypeORM
+# Clases del Curso de NestJS: Autenticación con Passport y JWT
 
 
 ### Proyecto del curso
-![Proyect](https://static.platzi.com/media/landing-projects/Proyecto-1.png)
-## Backend de PlatziStore - Conexión a PostreSQL
+![Proyect](https://static.platzi.com/media/landing-projects/Proyecto-2.png)
+## Backend de PlatziStore - Autenticación
 
-Crea la tercera versión de tu API REST con NestJS interactuando con una base de datos SQL de verdad. Configura Docker para funcionar correctamente con TypeORM y todo su stack de herramientas para desarrollo web.
+Crea la cuarta versión de tu API REST con NestJS. No importa si elegiste MongoDB o TypeORM para manejar tu base de datos, ahora protege tu aplicación web con estrategias profesional de autenticación.
 
 ## Documentation
 ```bash
@@ -61,6 +61,12 @@ $ npm install
 
 # Init instance of Docker
 $ docker-compose up -d  
+
+# Ejecutamos el proyecto
+$ npm run start:dev
+
+# Ejecutamos la migracion para crear la base de datos
+$ npm run migrations:run
 ```
 
 ## Running the app
